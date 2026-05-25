@@ -143,7 +143,6 @@ class PlayerController : MonoBehaviour, IDamageable {
 
     public void ReceiveDamage(float amount) {
         CurrentHealth -= amount;
-        _animator.SetTrigger("Hit");
         if (CurrentHealth <= 0) OnPlayerDied?.Invoke();
     }
 

@@ -5,8 +5,8 @@ public class EnemyProjectilePool : MonoBehaviour {
     public static EnemyProjectilePool Instance { get; private set; }
 
     [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private int defaultCapacity = 20;
-    [SerializeField] private int maxSize = 50;
+    [SerializeField] private int defaultCapacity = 10;
+    [SerializeField] private int maxSize = 30;
 
     private ObjectPool<GameObject> pool;
 
@@ -19,28 +19,25 @@ public class EnemyProjectilePool : MonoBehaviour {
         }
 
         pool = new ObjectPool<GameObject>(
-            createFunc: CreateBullet,
-            actionOnRelease: OnReleaseProjectile,
-            actionOnDestroy: OnDestroyProjectile,
+            createFunc: CreateProjectile,
+            actionOnRelease: p => p.SetActive(false),
+            actionOnDestroy: p => Destroy(p),
             collectionCheck: true,
             defaultCapacity: defaultCapacity,
             maxSize: maxSize
         );
     }
 
-    private GameObject CreateBullet() {
-        GameObject bullet = Instantiate(projectilePrefab, transform);
-        bullet.GetComponentInChildren<PooledBullet>().SetupPool(pool);
-        return bullet;
+    private GameObject CreateProjectile() {
+        GameObject p = Instantiate(projectilePrefab, transform);
+        p.GetComponent<PooledBlob>().SetupPool(pool);
+        return p;
     }
 
-    private void OnReleaseProjectile(GameObject bullet) => bullet.SetActive(false);
-    private void OnDestroyProjectile(GameObject bullet) => Destroy(bullet);
-
-    public GameObject GetProjectile(Vector3 position, Quaternion rotation) {
-        GameObject bullet = pool.Get();
-        bullet.transform.SetPositionAndRotation(position, rotation);
-        bullet.SetActive(true);
-        return bullet;
+    public void Launch(Vector3 spawnPos, Vector3 targetPos, float flightTime = 1.0f) {
+        GameObject p = pool.Get();
+        p.transform.position = spawnPos;
+        p.SetActive(true);
+        p.GetComponent<PooledBlob>().Launch(targetPos, flightTime);
     }
 }

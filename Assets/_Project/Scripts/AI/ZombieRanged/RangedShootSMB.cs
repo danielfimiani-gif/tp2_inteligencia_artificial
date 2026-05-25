@@ -2,6 +2,7 @@ using UnityEngine;
 
 class RangedShootSMB : StateMachineBehaviour {
     [SerializeField] private float shootFrameNormalized = 0.4f;
+    [SerializeField] private float flightTime = 0.6f;
 
     private RangedBrain _brain;
     private bool _shootFired;
@@ -43,6 +44,10 @@ class RangedShootSMB : StateMachineBehaviour {
 
     void FireProjectile() {
         if (_brain.ProjectileSpawnPoint == null) return;
-        EnemyProjectilePool.Instance.GetProjectile(_brain.ProjectileSpawnPoint.position, _brain.ProjectileSpawnPoint.rotation);
+        EnemyProjectilePool.Instance.Launch(
+            _brain.ProjectileSpawnPoint.position,
+            _brain.Target.position + Vector3.up * 1.0f,
+            flightTime
+        );
     }
 }
