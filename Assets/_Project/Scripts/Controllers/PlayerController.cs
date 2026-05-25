@@ -120,7 +120,7 @@ class PlayerController : MonoBehaviour, IDamageable {
         _nextFireTime = Time.time + fireRate;
 
         _currentAmmo--;
-        BulletPool.Instance.GetBullet(firePoint.position, firePoint.rotation);
+        ProjectilePool.Instance.GetBullet(firePoint.position, firePoint.rotation);
 
         _animator.SetTrigger("Fire");
     }

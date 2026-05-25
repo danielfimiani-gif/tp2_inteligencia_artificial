@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class ProjectilePool : MonoBehaviour {
-    public static ProjectilePool Instance { get; private set; }
+public class EnemyProjectilePool : MonoBehaviour {
+    public static EnemyProjectilePool Instance { get; private set; }
 
-    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private int defaultCapacity = 20;
     [SerializeField] private int maxSize = 50;
 
@@ -20,8 +20,8 @@ public class ProjectilePool : MonoBehaviour {
 
         pool = new ObjectPool<GameObject>(
             createFunc: CreateBullet,
-            actionOnRelease: OnReleaseBullet,
-            actionOnDestroy: OnDestroyBullet,
+            actionOnRelease: OnReleaseProjectile,
+            actionOnDestroy: OnDestroyProjectile,
             collectionCheck: true,
             defaultCapacity: defaultCapacity,
             maxSize: maxSize
@@ -29,15 +29,15 @@ public class ProjectilePool : MonoBehaviour {
     }
 
     private GameObject CreateBullet() {
-        GameObject bullet = Instantiate(bulletPrefab, transform);
+        GameObject bullet = Instantiate(projectilePrefab, transform);
         bullet.GetComponentInChildren<PooledBullet>().SetupPool(pool);
         return bullet;
     }
 
-    private void OnReleaseBullet(GameObject bullet) => bullet.SetActive(false);
-    private void OnDestroyBullet(GameObject bullet) => Destroy(bullet);
+    private void OnReleaseProjectile(GameObject bullet) => bullet.SetActive(false);
+    private void OnDestroyProjectile(GameObject bullet) => Destroy(bullet);
 
-    public GameObject GetBullet(Vector3 position, Quaternion rotation) {
+    public GameObject GetProjectile(Vector3 position, Quaternion rotation) {
         GameObject bullet = pool.Get();
         bullet.transform.SetPositionAndRotation(position, rotation);
         bullet.SetActive(true);
