@@ -10,6 +10,10 @@ class RangedBrain : MonoBehaviour, IDamageable {
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private GameObject bloodParticles;
 
+    [SerializeField] private HealthBar healthBar;
+
+
+
     private static readonly int HashDistance = Animator.StringToHash("DistanceToPlayer");
     private static readonly int HashDie = Animator.StringToHash("Die");
 
@@ -25,6 +29,7 @@ class RangedBrain : MonoBehaviour, IDamageable {
         Animator = GetComponent<Animator>();
         Target = GameObject.FindGameObjectWithTag("Player")?.transform;
         CurrentHealth = maxHealth;
+        if (healthBar != null) healthBar.SetValue(CurrentHealth, maxHealth);
     }
 
     void Start() {
@@ -44,5 +49,7 @@ class RangedBrain : MonoBehaviour, IDamageable {
             Instantiate(bloodParticles, transform.position + Vector3.up * 1.2f, Quaternion.identity);
         if (CurrentHealth <= 0)
             Animator.SetTrigger(HashDie);
+
+        if (healthBar != null) healthBar.SetValue(CurrentHealth, maxHealth);
     }
 }

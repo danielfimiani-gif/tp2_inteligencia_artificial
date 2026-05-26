@@ -16,7 +16,10 @@ class PlayerController : MonoBehaviour, IDamageable {
     [SerializeField] private int maxAmmo = 12;
     [SerializeField] private float reloadTime = 1.5f;
 
+    [SerializeField] private HealthBar healthBar;
+
     public static event Action OnPlayerDied;
+    public static event Action<int, int> OnAmmoChanged;
 
     private Rigidbody _rb;
     private Animator _animator;
@@ -29,6 +32,14 @@ class PlayerController : MonoBehaviour, IDamageable {
     private int _currentAmmo;
     private bool _isReloading;
     private float _nextFireTime;
+
+    public int CurrentAmmo {
+        get => _currentAmmo;
+        set {
+            _currentAmmo = value;
+            OnAmmoChanged?.Invoke(_currentAmmo, maxAmmo);
+        }
+    }
 
     public float CurrentHealth { get; private set; }
 
@@ -46,8 +57,9 @@ class PlayerController : MonoBehaviour, IDamageable {
 
         _floor = new Plane(Vector3.up, new Vector3(0, transform.position.y, 0));
 
-        _currentAmmo = maxAmmo;
+        CurrentAmmo = maxAmmo;
         CurrentHealth = maxHealth;
+        if (healthBar != null) healthBar.SetValue(CurrentHealth, maxHealth);
     }
 
     void OnEnable() {
@@ -110,7 +122,7 @@ class PlayerController : MonoBehaviour, IDamageable {
     private void FirePerformed(InputAction.CallbackContext context) {
         if (_isReloading) return;
 
-        if (_currentAmmo <= 0) {
+        if (CurrentAmmo <= 0) {
             AudioManager.Instance.PlaySFX("FireClick");
             return;
         }
@@ -119,7 +131,7 @@ class PlayerController : MonoBehaviour, IDamageable {
 
         _nextFireTime = Time.time + fireRate;
 
-        _currentAmmo--;
+        CurrentAmmo--;
         ProjectilePool.Instance.GetBullet(firePoint.position, firePoint.rotation);
 
         _animator.SetTrigger("Fire");
@@ -128,7 +140,7 @@ class PlayerController : MonoBehaviour, IDamageable {
     private void ReloadPerformed(InputAction.CallbackContext context) {
         if (_isReloading) return;
 
-        if (_currentAmmo == maxAmmo) return;
+        if (CurrentAmmo == maxAmmo) return;
 
         StartCoroutine(ReloadCoroutine());
     }
@@ -137,16 +149,18 @@ class PlayerController : MonoBehaviour, IDamageable {
         _isReloading = true;
         _animator.SetTrigger("Reload");
         yield return new WaitForSeconds(reloadTime);
-        _currentAmmo = maxAmmo;
+        CurrentAmmo = maxAmmo;
         _isReloading = false;
     }
 
     public void ReceiveDamage(float amount) {
         CurrentHealth -= amount;
         if (CurrentHealth <= 0) OnPlayerDied?.Invoke();
+        if (healthBar != null) healthBar.SetValue(CurrentHealth, maxHealth);
     }
 
     public void Heal(float amount) {
         CurrentHealth = Math.Clamp(CurrentHealth + amount, 0, maxHealth);
+        if (healthBar != null) healthBar.SetValue(CurrentHealth, maxHealth);
     }
 }

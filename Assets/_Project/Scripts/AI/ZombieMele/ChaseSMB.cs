@@ -9,7 +9,8 @@ class ChaseSMB : StateMachineBehaviour {
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        if (_brain.Target == null) return;
+        if (_brain == null) _brain = animator.GetComponent<ZombieBrain>();
+        if (_brain == null || _brain.Target == null) return;
         if (!_brain.Agent.isOnNavMesh) return;
         _brain.Agent.SetDestination(_brain.Target.position);
     }

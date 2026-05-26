@@ -6,9 +6,10 @@ class ZombieBrain : MonoBehaviour, IDamageable {
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float attackDamage = 15f;
     [SerializeField] private GameObject bloodParticles;
+    [SerializeField] private HealthBar healthBar;
+
 
     private static readonly int HashDistance = Animator.StringToHash("DistanceToPlayer");
-    private static readonly int HashHit = Animator.StringToHash("Hit");
     private static readonly int HashDie = Animator.StringToHash("Die");
 
     public NavMeshAgent Agent;
@@ -24,6 +25,8 @@ class ZombieBrain : MonoBehaviour, IDamageable {
         if (Target == null) Target =
             GameObject.FindGameObjectWithTag("Player")?.transform;
         CurrentHealth = maxHealth;
+        if (healthBar != null) healthBar.SetValue(CurrentHealth, maxHealth);
+
     }
 
     void Update() {
@@ -44,5 +47,7 @@ class ZombieBrain : MonoBehaviour, IDamageable {
 
         if (CurrentHealth <= 0)
             Animator.SetTrigger(HashDie);
+
+        if (healthBar != null) healthBar.SetValue(CurrentHealth, maxHealth);
     }
 }
