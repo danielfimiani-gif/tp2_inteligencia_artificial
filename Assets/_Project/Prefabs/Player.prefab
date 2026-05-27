@@ -167,7 +167,7 @@ MonoBehaviour:
   rotationSpeed: 15
   maxHealth: 250
   firePoint: {fileID: 1499910674434508736}
-  fireRate: 0.2
+  fireRate: 0.1
   maxAmmo: 33
   reloadTime: 1
   startingMagazines: 5

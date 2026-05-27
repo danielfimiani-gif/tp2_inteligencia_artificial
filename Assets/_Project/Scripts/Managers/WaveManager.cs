@@ -123,10 +123,15 @@ class WaveManager : MonoBehaviour {
         if (!endlessLoop || waves.Length == 0) yield break;
 
         WaveData last = waves[^1];
+        int endlessWaveIndex = waves.Length;
         while (true) {
             yield return new WaitForSeconds(last.breakBefore);
+            endlessWaveIndex++;
+            OnWaveStarted?.Invoke(endlessWaveIndex);
+            AudioManager.Instance?.PlaySFX("WaveStart");
             yield return SpawnWave(last);
             yield return new WaitUntil(() => _aliveCount == 0);
+            OnWaveCleared?.Invoke(endlessWaveIndex);
             last.MeleeCount++;
         }
     }

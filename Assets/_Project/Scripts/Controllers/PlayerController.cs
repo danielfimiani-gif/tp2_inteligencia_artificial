@@ -81,6 +81,8 @@ class PlayerController : MonoBehaviour, IDamageable {
     }
 
     void Update() {
+        if (Time.timeScale == 0f) return;
+
         _moveInput = _inputActions.Player.Move.ReadValue<Vector2>();
         _lookInput = _inputActions.Player.Look.ReadValue<Vector2>();
 
@@ -94,6 +96,7 @@ class PlayerController : MonoBehaviour, IDamageable {
     }
 
     void FixedUpdate() {
+        if (Time.timeScale == 0f) return;
         HandleMovement();
     }
 
@@ -138,6 +141,7 @@ class PlayerController : MonoBehaviour, IDamageable {
     }
 
     private void FireStarted(InputAction.CallbackContext context) {
+        if (Time.timeScale == 0f) return;
         if (_isReloading) return;
 
         if (CurrentAmmo <= 0) {
@@ -158,6 +162,7 @@ class PlayerController : MonoBehaviour, IDamageable {
     }
 
     private void ReloadPerformed(InputAction.CallbackContext context) {
+        if (Time.timeScale == 0f) return;
         if (_isReloading) return;
         if (CurrentAmmo == maxAmmo) return;
         if (_currentMagazines <= 0) return;

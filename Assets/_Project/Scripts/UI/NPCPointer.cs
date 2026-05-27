@@ -13,6 +13,11 @@ public class NPCPointer : MonoBehaviour {
     }
 
     void LateUpdate() {
+        if (Time.timeScale == 0f) {
+            arrow.gameObject.SetActive(false);
+            return;
+        }
+
         var npc = WaveManager.Instance?.CurrentNpc;
         if (npc == null) {
             arrow.gameObject.SetActive(false);
