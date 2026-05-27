@@ -181,6 +181,10 @@ MonoBehaviour:
   projectileSpawnPoint: {fileID: 6102430127507752962}
   bloodParticles: {fileID: 2593222097883617497, guid: 9f2e3269bab54264e808a89f137f644d, type: 3}
   healthBar: {fileID: 9118103981947569265}
+  enragedHealthThreshold: 0.3
+  enragedSpeedMultiplier: 1.5
+  enragedOutline: {fileID: 7706748814692797027}
+  enragedOutlineColor: {r: 1, g: 0.5, b: 0, a: 1}
   Agent: {fileID: 3405055091862467964}
   Animator: {fileID: 8203319528237497167}
   Target: {fileID: 0}

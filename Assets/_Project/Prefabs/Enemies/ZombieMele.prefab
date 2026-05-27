@@ -149,6 +149,11 @@ MonoBehaviour:
   attackDamage: 15
   bloodParticles: {fileID: 2593222097883617497, guid: 9f2e3269bab54264e808a89f137f644d, type: 3}
   healthBar: {fileID: 8635864158954953508}
+  enragedHealthThreshold: 0.3
+  enragedSpeedMultiplier: 1.5
+  enragedDamageMultiplier: 1.5
+  enragedOutline: {fileID: 5712071093587371596}
+  enragedOutlineColor: {r: 1, g: 0.5, b: 0, a: 1}
   Agent: {fileID: 7379200306439855256}
   Animator: {fileID: 9111662422707502754}
   Target: {fileID: 0}

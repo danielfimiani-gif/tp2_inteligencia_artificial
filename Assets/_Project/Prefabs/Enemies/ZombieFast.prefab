@@ -83,6 +83,10 @@ PrefabInstance:
       propertyPath: attackDamage
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5476186885680916901, guid: 29f619e074a40074b8971ca00bec1912, type: 3}
+      propertyPath: enragedOutline
+      value: 
+      objectReference: {fileID: 1416153886102155429}
     - target: {fileID: 6931429586389368280, guid: 29f619e074a40074b8971ca00bec1912, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
