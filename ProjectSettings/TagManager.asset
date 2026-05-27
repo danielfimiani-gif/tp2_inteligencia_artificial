@@ -8,6 +8,7 @@ TagManager:
   - Ranged
   - Fast
   - Tank
+  - NPC
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Enemy
   - Walls
   - EnemyBullet
-  - 
+  - PlayerProjectile
   - 
   - 
   - 

@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 4323759081148274981}
   - component: {fileID: 2666192123792178536}
   - component: {fileID: 3756553758736801947}
+  - component: {fileID: 5293845948226188979}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -167,9 +168,27 @@ MonoBehaviour:
   maxHealth: 250
   firePoint: {fileID: 1499910674434508736}
   fireRate: 0.2
-  maxAmmo: 12
-  reloadTime: 1.5
+  maxAmmo: 33
+  reloadTime: 1
   healthBar: {fileID: 319363063335506721}
+--- !u!114 &5293845948226188979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8271912307791472724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &1245782346365322394
 PrefabInstance:
   m_ObjectHideFlags: 0

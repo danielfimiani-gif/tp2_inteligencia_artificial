@@ -160,6 +160,7 @@ GameObject:
   - component: {fileID: 1980550449234094088}
   - component: {fileID: 431604735910888011}
   - component: {fileID: 3717195366268062654}
+  - component: {fileID: 7484064749326214274}
   m_Layer: 9
   m_Name: EnemyBlobProjectile
   m_TagString: Untagged
@@ -247,6 +248,24 @@ MonoBehaviour:
   damage: 10
   lifetime: 4
   trailRenderer: {fileID: 6302774027936703647}
+--- !u!114 &7484064749326214274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7710653736576642152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &8621029506620843925
 GameObject:
   m_ObjectHideFlags: 0

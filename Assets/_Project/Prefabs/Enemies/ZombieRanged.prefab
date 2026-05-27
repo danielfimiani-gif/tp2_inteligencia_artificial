@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 480835236763308544}
   - component: {fileID: 891454785459106437}
   - component: {fileID: 3606117491851728021}
+  - component: {fileID: 7706748814692797027}
   m_Layer: 7
   m_Name: ZombieRanged
   m_TagString: Ranged
@@ -183,6 +184,24 @@ MonoBehaviour:
   Agent: {fileID: 3405055091862467964}
   Animator: {fileID: 8203319528237497167}
   Target: {fileID: 0}
+--- !u!114 &7706748814692797027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6080537968013875795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.31132078, g: 0, b: 0, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &7269016812805298015
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -519,7 +538,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: a215a32713d0e7c4883a41eb991b576d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

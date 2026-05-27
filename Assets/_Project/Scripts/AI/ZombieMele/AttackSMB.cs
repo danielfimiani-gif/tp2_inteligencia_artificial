@@ -35,10 +35,6 @@ class AttackSMB : StateMachineBehaviour {
         }
     }
 
-    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        _brain.Agent.isStopped = false;
-    }
-
     private void TryDealDamage() {
         if (_brain.Target == null) return;
         float dist = Vector3.Distance(_brain.transform.position, _brain.Target.position);

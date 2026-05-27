@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1442457687874415866}
   - component: {fileID: 5691048858751358547}
   - component: {fileID: 5476186885680916901}
+  - component: {fileID: 5712071093587371596}
   m_Layer: 7
   m_Name: ZombieMele
   m_TagString: Melee
@@ -151,6 +152,24 @@ MonoBehaviour:
   Agent: {fileID: 7379200306439855256}
   Animator: {fileID: 9111662422707502754}
   Target: {fileID: 0}
+--- !u!114 &5712071093587371596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9156514094132888402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.31132078, g: 0, b: 0, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &3362200871208162268
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -491,7 +510,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: 79441c1316e862a40a36d32c0d97f1ec, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

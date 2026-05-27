@@ -3,7 +3,9 @@ using UnityEngine;
 
 class ScoreManager : MonoBehaviour {
     [SerializeField] private int scoreZombieMelee = 10;
-    [SerializeField] private int scoreZombieRanged = 10;
+    [SerializeField] private int scoreZombieFast = 11;
+    [SerializeField] private int scoreZombieTank = 20;
+    [SerializeField] private int scoreZombieRanged = 12;
 
     public static ScoreManager Instance { get; private set; }
 
@@ -52,11 +54,32 @@ class ScoreManager : MonoBehaviour {
         Score += scoreValue;
     }
 
+    public void AddScoreOnly(int value) {
+        Score += value;
+    }
+
     public void Reset() {
         Score = 0;
         Kills = 0;
     }
 
-    public void HandleZombieDied(ZombieBrain _) => AddKill(scoreZombieMelee);
+    public void HandleZombieDied(ZombieBrain brain) {
+        int score = 0;
+        switch (brain.gameObject.tag) {
+            case "Melee":
+                score = scoreZombieMelee;
+                break;
+            case "Tank":
+                score = scoreZombieTank;
+                break;
+            case "Fast":
+                score = scoreZombieFast;
+                break;
+        }
+
+        AddKill(score);
+
+    }
+
     public void HandleRangedZombieDied(RangedBrain _) => AddKill(scoreZombieRanged);
 }

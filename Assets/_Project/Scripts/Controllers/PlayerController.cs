@@ -64,13 +64,18 @@ class PlayerController : MonoBehaviour, IDamageable {
 
     void OnEnable() {
         _inputActions.Player.Enable();
-        _inputActions.Player.Fire.performed += FirePerformed;
+        _inputActions.Player.Fire.started += FireStarted;
         _inputActions.Player.Reload.performed += ReloadPerformed;
     }
 
     void Update() {
         _moveInput = _inputActions.Player.Move.ReadValue<Vector2>();
         _lookInput = _inputActions.Player.Look.ReadValue<Vector2>();
+
+
+        if (_inputActions.Player.Fire.IsPressed()) {
+            TryFire();
+        }
 
         HandleMouseRotation();
         UpdateAnimator();
@@ -81,7 +86,7 @@ class PlayerController : MonoBehaviour, IDamageable {
     }
 
     void OnDisable() {
-        _inputActions.Player.Fire.performed -= FirePerformed;
+        _inputActions.Player.Fire.performed -= FireStarted;
         _inputActions.Player.Reload.performed -= ReloadPerformed;
         _inputActions.Player.Disable();
     }
@@ -119,21 +124,22 @@ class PlayerController : MonoBehaviour, IDamageable {
         _animator.SetFloat("Speed", worldDirection.magnitude);
     }
 
-    private void FirePerformed(InputAction.CallbackContext context) {
+    private void FireStarted(InputAction.CallbackContext context) {
         if (_isReloading) return;
 
         if (CurrentAmmo <= 0) {
             AudioManager.Instance.PlaySFX("FireClick");
-            return;
         }
+    }
 
+    private void TryFire() {
+        if (_isReloading) return;
+        if (CurrentAmmo <= 0) return;
         if (Time.time < _nextFireTime) return;
 
         _nextFireTime = Time.time + fireRate;
-
         CurrentAmmo--;
         ProjectilePool.Instance.GetBullet(firePoint.position, firePoint.rotation);
-
         _animator.SetTrigger("Fire");
     }
 
@@ -156,11 +162,6 @@ class PlayerController : MonoBehaviour, IDamageable {
     public void ReceiveDamage(float amount) {
         CurrentHealth -= amount;
         if (CurrentHealth <= 0) OnPlayerDied?.Invoke();
-        if (healthBar != null) healthBar.SetValue(CurrentHealth, maxHealth);
-    }
-
-    public void Heal(float amount) {
-        CurrentHealth = Math.Clamp(CurrentHealth + amount, 0, maxHealth);
         if (healthBar != null) healthBar.SetValue(CurrentHealth, maxHealth);
     }
 }

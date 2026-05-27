@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5858907189110400184}
   - component: {fileID: 2548998369964753275}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 3193273024347278500}
   - component: {fileID: 5413321882700474773}
   - component: {fileID: 8358986746236890279}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BulletProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,7 +233,8 @@ GameObject:
   - component: {fileID: 710766425255438780}
   - component: {fileID: 2431632240770490662}
   - component: {fileID: 6849024902300065672}
-  m_Layer: 0
+  - component: {fileID: 1265151123874828298}
+  m_Layer: 10
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,3 +309,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1265151123874828298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8634019159362364112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
