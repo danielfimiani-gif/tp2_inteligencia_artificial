@@ -113,7 +113,8 @@ class PlayerController : MonoBehaviour, IDamageable {
 
     void HandleMouseRotation() {
         var ray = _camera.ScreenPointToRay(_lookInput);
-        if (_floor.Raycast(ray, out float distance)) {
+        var firePlane = new Plane(Vector3.up, firePoint.position);
+        if (firePlane.Raycast(ray, out float distance)) {
             var point = ray.GetPoint(distance);
             var lookPoint = point - transform.position;
             lookPoint.y = 0;
@@ -153,6 +154,7 @@ class PlayerController : MonoBehaviour, IDamageable {
         CurrentAmmo--;
         ProjectilePool.Instance.GetBullet(firePoint.position, firePoint.rotation);
         _animator.SetTrigger("Fire");
+        AudioManager.Instance?.PlaySFX("Fire");
     }
 
     private void ReloadPerformed(InputAction.CallbackContext context) {
@@ -166,6 +168,7 @@ class PlayerController : MonoBehaviour, IDamageable {
     IEnumerator ReloadCoroutine() {
         _isReloading = true;
         _animator.SetTrigger("Reload");
+        AudioManager.Instance?.PlaySFX("Reload");
         yield return new WaitForSeconds(reloadTime);
         CurrentAmmo = maxAmmo;
         CurrentMagazines--;

@@ -67,6 +67,8 @@ class WaveManager : MonoBehaviour {
     private void HandleBossDied(BossBrain _) => _bossDefeated = true;
 
     void Start() {
+        AudioManager.Instance?.PlayMusic("GameplayMusic");
+
         if (GameModeSelection.Selected == GameMode.Boss) {
             StartCoroutine(RunBossMode());
         } else {
@@ -80,6 +82,7 @@ class WaveManager : MonoBehaviour {
             yield return new WaitForSeconds(waves[i].breakBefore);
             SpawnNPC();
             OnWaveStarted?.Invoke(i + 1);
+            AudioManager.Instance?.PlaySFX("WaveStart");
             yield return SpawnWave(waves[i]);
             yield return new WaitUntil(() => _aliveCount == 0);
             OnWaveCleared?.Invoke(i + 1);
@@ -110,6 +113,7 @@ class WaveManager : MonoBehaviour {
             yield return new WaitForSeconds(waves[i].breakBefore);
             SpawnNPC();
             OnWaveStarted?.Invoke(i + 1);
+            AudioManager.Instance?.PlaySFX("WaveStart");
             yield return SpawnWave(waves[i]);
             yield return new WaitUntil(() => _aliveCount == 0);
             OnWaveCleared?.Invoke(i + 1);

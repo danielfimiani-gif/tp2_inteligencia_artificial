@@ -25,6 +25,7 @@ class Rescuable : MonoBehaviour {
         if (rescueVFX != null)
             Instantiate(rescueVFX, transform.position, Quaternion.identity);
 
+        AudioManager.Instance?.PlaySFX("Rescue");
         OnRescued?.Invoke();
         Destroy(gameObject);
     }
