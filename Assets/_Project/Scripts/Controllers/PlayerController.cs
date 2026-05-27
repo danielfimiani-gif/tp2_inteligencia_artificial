@@ -15,11 +15,14 @@ class PlayerController : MonoBehaviour, IDamageable {
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private int maxAmmo = 12;
     [SerializeField] private float reloadTime = 1.5f;
+    [SerializeField] private int startingMagazines = 5;
 
     [SerializeField] private HealthBar healthBar;
 
     public static event Action OnPlayerDied;
     public static event Action<int, int> OnAmmoChanged;
+    public static event Action<int> OnMagazinesChanged;
+
 
     private Rigidbody _rb;
     private Animator _animator;
@@ -30,6 +33,7 @@ class PlayerController : MonoBehaviour, IDamageable {
     private Vector2 _moveInput;
     private Vector2 _lookInput;
     private int _currentAmmo;
+    private int _currentMagazines;
     private bool _isReloading;
     private float _nextFireTime;
 
@@ -42,6 +46,13 @@ class PlayerController : MonoBehaviour, IDamageable {
     }
 
     public float CurrentHealth { get; private set; }
+    public int CurrentMagazines {
+        get => _currentMagazines;
+        set {
+            _currentMagazines = value;
+            OnMagazinesChanged?.Invoke(_currentMagazines);
+        }
+    }
 
     void Awake() {
         _rb = GetComponent<Rigidbody>();
@@ -58,6 +69,7 @@ class PlayerController : MonoBehaviour, IDamageable {
         _floor = new Plane(Vector3.up, new Vector3(0, transform.position.y, 0));
 
         CurrentAmmo = maxAmmo;
+        CurrentMagazines = startingMagazines;
         CurrentHealth = maxHealth;
         if (healthBar != null) healthBar.SetValue(CurrentHealth, maxHealth);
     }
@@ -145,8 +157,8 @@ class PlayerController : MonoBehaviour, IDamageable {
 
     private void ReloadPerformed(InputAction.CallbackContext context) {
         if (_isReloading) return;
-
         if (CurrentAmmo == maxAmmo) return;
+        if (_currentMagazines <= 0) return;
 
         StartCoroutine(ReloadCoroutine());
     }
@@ -156,6 +168,7 @@ class PlayerController : MonoBehaviour, IDamageable {
         _animator.SetTrigger("Reload");
         yield return new WaitForSeconds(reloadTime);
         CurrentAmmo = maxAmmo;
+        CurrentMagazines--;
         _isReloading = false;
     }
 
@@ -163,5 +176,9 @@ class PlayerController : MonoBehaviour, IDamageable {
         CurrentHealth -= amount;
         if (CurrentHealth <= 0) OnPlayerDied?.Invoke();
         if (healthBar != null) healthBar.SetValue(CurrentHealth, maxHealth);
+    }
+
+    public void AddMagazine() {
+        CurrentMagazines++;
     }
 }

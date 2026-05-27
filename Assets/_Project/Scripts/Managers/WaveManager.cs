@@ -24,6 +24,11 @@ class WaveManager : MonoBehaviour {
     [Header("Endless")]
     [SerializeField] private bool endlessLoop = true;
 
+    [Header("Drops")]
+    [SerializeField] private GameObject ammoPickupPrefab;
+    [Range(0f, 1f)]
+    [SerializeField] private float magDropChance = 0.2f;
+
     public static event Action<int> OnWaveStarted;
     public static event Action<int> OnWaveCleared;
 
@@ -102,14 +107,26 @@ class WaveManager : MonoBehaviour {
         _aliveCount++;
     }
 
-    private void HandleZombieDied(ZombieBrain _) => _aliveCount--;
-    private void HandleRangedDied(RangedBrain _) => _aliveCount--;
+    private void HandleZombieDied(ZombieBrain z) {
+        _aliveCount--;
+        TryDropMag(z.transform.position);
+    }
+    private void HandleRangedDied(RangedBrain z) {
+        _aliveCount--;
+        TryDropMag(z.transform.position);
+    }
 
     private void Shuffle<T>(List<T> list) {
         for (int i = list.Count - 1; i > 0; i--) {
             int j = UnityEngine.Random.Range(0, i + 1);
             (list[i], list[j]) = (list[j], list[i]);
         }
+    }
+
+    private void TryDropMag(Vector3 worldPos) {
+        if (ammoPickupPrefab == null) return;
+        if (UnityEngine.Random.value > magDropChance) return;
+        Instantiate(ammoPickupPrefab, worldPos + Vector3.up * 0.5f, Quaternion.identity, transform);
     }
 
     private void SpawnNPC() {
