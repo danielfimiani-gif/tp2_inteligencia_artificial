@@ -7,7 +7,8 @@ class GameManager : MonoBehaviour {
 
     public enum State {
         Running,
-        GameOver
+        GameOver,
+        Victory
     }
 
     private float _timeSurvived = 0;
@@ -18,6 +19,7 @@ class GameManager : MonoBehaviour {
         set {
             _currentState = value;
             if (_currentState == State.GameOver) OnGameOver?.Invoke();
+            else if (_currentState == State.Victory) OnVictory?.Invoke();
         }
     }
     public float TimeSurvived {
@@ -30,6 +32,7 @@ class GameManager : MonoBehaviour {
 
     public static event Action<float> OnTimeChanged;
     public static event Action OnGameOver;
+    public static event Action OnVictory;
 
     void Awake() {
         if (Instance == null) {
@@ -56,8 +59,14 @@ class GameManager : MonoBehaviour {
     }
 
     public void EndGame() {
-        if (CurrentState == State.GameOver) return;
+        if (CurrentState != State.Running) return;
         CurrentState = State.GameOver;
+        Time.timeScale = 0f;
+    }
+
+    public void Win() {
+        if (CurrentState != State.Running) return;
+        CurrentState = State.Victory;
         Time.timeScale = 0f;
     }
 

@@ -3,43 +3,42 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 class MainMenu : MonoBehaviour {
-    [SerializeField] private Button playButton;
-    [SerializeField] private Button optionsButton;
+    [SerializeField] private Button endlessButton;
+    [SerializeField] private Button bossButton;
     [SerializeField] private Button exitButton;
-    [SerializeField] private GameObject optionsPanel;
     [SerializeField] private string gameScene;
 
     void Awake() {
-        playButton.onClick.AddListener(OnPlayButtonClicked);
-        optionsButton.onClick.AddListener(OptionsButtonClicked);
+        endlessButton.onClick.AddListener(OnEndlessClicked);
+        bossButton.onClick.AddListener(OnBossClicked);
         exitButton.onClick.AddListener(ExitButtonClicked);
     }
 
     void Start() {
 #if UNITY_WEBGL
-    exitButton.gameObject.SetActive(false);
+        exitButton.gameObject.SetActive(false);
 #endif
     }
 
     void OnDestroy() {
-        playButton.onClick.RemoveListener(OnPlayButtonClicked);
-        optionsButton.onClick.RemoveListener(OptionsButtonClicked);
+        endlessButton.onClick.RemoveListener(OnEndlessClicked);
+        bossButton.onClick.RemoveListener(OnBossClicked);
         exitButton.onClick.RemoveListener(ExitButtonClicked);
     }
 
-    private void OnPlayButtonClicked() {
-        if (!string.IsNullOrEmpty(gameScene)) SceneManager.LoadScene(gameScene);
-    }
+    private void OnEndlessClicked() => StartGame(GameMode.Endless);
+    private void OnBossClicked() => StartGame(GameMode.Boss);
 
-    private void OptionsButtonClicked() {
-        if (optionsPanel) optionsPanel.SetActive(true);
+    private void StartGame(GameMode mode) {
+        GameModeSelection.Selected = mode;
+        if (!string.IsNullOrEmpty(gameScene)) SceneManager.LoadScene(gameScene);
     }
 
     private void ExitButtonClicked() {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit()
+        Application.Quit();
 #endif
     }
 }

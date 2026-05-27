@@ -29,6 +29,11 @@ class WaveManager : MonoBehaviour {
     [Range(0f, 1f)]
     [SerializeField] private float magDropChance = 0.2f;
 
+    [Header("Boss Mode")]
+    [SerializeField] private GameObject bossPrefab;
+    [SerializeField] private Transform bossSpawnPoint;
+    [SerializeField] private int bossModeWaveCount = 5;
+
     public static event Action<int> OnWaveStarted;
     public static event Action<int> OnWaveCleared;
 
@@ -49,15 +54,55 @@ class WaveManager : MonoBehaviour {
     void OnEnable() {
         DieSMB.OnZombieDied += HandleZombieDied;
         RangedDieSMB.OnRangedZombieDied += HandleRangedDied;
+        BossBrain.OnBossDied += HandleBossDied;
     }
 
     void OnDisable() {
         DieSMB.OnZombieDied -= HandleZombieDied;
         RangedDieSMB.OnRangedZombieDied -= HandleRangedDied;
+        BossBrain.OnBossDied -= HandleBossDied;
     }
 
+    private bool _bossDefeated;
+    private void HandleBossDied(BossBrain _) => _bossDefeated = true;
+
     void Start() {
-        StartCoroutine(RunWaves());
+        if (GameModeSelection.Selected == GameMode.Boss) {
+            StartCoroutine(RunBossMode());
+        } else {
+            StartCoroutine(RunWaves());
+        }
+    }
+
+    IEnumerator RunBossMode() {
+        int n = Mathf.Min(bossModeWaveCount, waves.Length);
+        for (int i = 0; i < n; i++) {
+            yield return new WaitForSeconds(waves[i].breakBefore);
+            SpawnNPC();
+            OnWaveStarted?.Invoke(i + 1);
+            yield return SpawnWave(waves[i]);
+            yield return new WaitUntil(() => _aliveCount == 0);
+            OnWaveCleared?.Invoke(i + 1);
+            CleanupNPC();
+        }
+
+        yield return new WaitForSeconds(3f);
+        SpawnBoss();
+        yield return new WaitUntil(() => _bossDefeated);
+        yield return new WaitForSeconds(2f);
+        GameManager.Instance?.Win();
+    }
+
+    private void SpawnBoss() {
+        if (bossPrefab == null) {
+            Debug.LogWarning("[WaveManager] bossPrefab no asignado.");
+            return;
+        }
+        Vector3 pos = bossSpawnPoint != null ? bossSpawnPoint.position : Vector3.zero;
+        if (NavMesh.SamplePosition(pos, out NavMeshHit hit, 10f, NavMesh.AllAreas)) {
+            pos = hit.position;
+        }
+        Instantiate(bossPrefab, pos, Quaternion.identity, transform);
     }
 
     IEnumerator RunWaves() {

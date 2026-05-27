@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 class GameOverPanel : MonoBehaviour {
     [SerializeField] private GameObject panelRoot;
+    [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text killsText;
     [SerializeField] private TMP_Text timeText;
@@ -15,17 +16,24 @@ class GameOverPanel : MonoBehaviour {
     }
 
     void OnEnable() {
-        GameManager.OnGameOver += Show;
+        GameManager.OnGameOver += ShowDefeat;
+        GameManager.OnVictory += ShowVictory;
         restartButton.onClick.AddListener(OnRestartClicked);
     }
 
     void OnDisable() {
-        GameManager.OnGameOver -= Show;
+        GameManager.OnGameOver -= ShowDefeat;
+        GameManager.OnVictory -= ShowVictory;
         restartButton.onClick.RemoveListener(OnRestartClicked);
     }
 
-    void Show() {
+    private void ShowDefeat() => Show("GAME OVER");
+    private void ShowVictory() => Show("VICTORY!");
+
+    void Show(string title) {
         panelRoot.SetActive(true);
+
+        if (titleText != null) titleText.text = title;
 
         int score = ScoreManager.Instance.Score;
         int kills = ScoreManager.Instance.Kills;
